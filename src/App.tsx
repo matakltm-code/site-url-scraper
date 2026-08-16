@@ -288,10 +288,15 @@ export default function App() {
                   <Database size={18} />
                   Start Crawling
                 </button>
-                <button className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-8 py-3 rounded-full font-medium transition-all shadow-sm flex items-center gap-2">
+                <a 
+                  href="https://github.com/matakltm-code/site-url-scraper#site-url-scraper"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-8 py-3 rounded-full font-medium transition-all shadow-sm flex items-center gap-2"
+                >
                   <DownloadCloud size={18} />
                   View Docs
-                </button>
+                </a>
               </div>
             </motion.div>
           )}
