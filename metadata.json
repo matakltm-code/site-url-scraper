@@ -1,0 +1,8 @@
+{
+  "name": "Site Url Scraper",
+  "description": "A web data infrastructure and documentation scraper that simulates deep recursive crawling and offline mirroring.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
