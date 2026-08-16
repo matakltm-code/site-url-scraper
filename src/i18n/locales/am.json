@@ -1,0 +1,29 @@
+{
+  "header": {
+    "title": "የድረ-ገጽ አድራሻ ሰብሳቢ"
+  },
+  "hero": {
+    "title_1": "የድር ዳታ መሰረተ ልማት እና",
+    "title_2": "የሰነድ ማውረጃ",
+    "subtitle": "ጥልቅ ተደጋጋሚ ፍለጋ፣ ብልህ የኤስፒኤ (SPA) የጎን አሞሌ ግኝት፣ እና የቀጥታ-ዓይነት ከመስመር ውጭ የድር ጣቢያ መስታወት። ጸረ-ቦት መከላከያ ባለው አካባቢያዊ ሄድለስ ክሮሚየም የተጎላበተ።",
+    "start_crawling": "መጎተት ጀምር",
+    "view_docs": "ሰነዶችን ይመልከቱ"
+  },
+  "workspace": {
+    "crawl_output": "የመጎተት ውጤት",
+    "clear_reset": "አጽዳ እና ዳግም አስጀምር",
+    "error_title": "በመጎተት ላይ ስህተት አጋጥሟል",
+    "error_desc": "ለዝርዝሮች ከላይ ያለውን የተርሚናል ውፅዓት ይመልከቱ።",
+    "reset_terminal": "ተርሚናልን ዳግም አስጀምር",
+    "ready_to_mirror": "ለመስታወት ዝግጁ ነው",
+    "nodes_selected": "{{count}} አንጓዎች ለውፅዓት ተመርጠዋል።",
+    "extract_bundle": "አውጣ እና አጠቃልል",
+    "mirroring_paused": "መስታወት ማድረግ ቆሟል",
+    "mirroring_in_progress": "መስታወት ማድረግ በመካሄድ ላይ ነው",
+    "captured": "ከ {{total}} ውስጥ {{current}} አገናኞች ተይዘዋል",
+    "resource_tree": "የሀብት ዛፍ",
+    "discovering": "መንገዶችን በማግኘት ላይ...",
+    "discovery_stopped": "የሀብት ግኝት ቆሟል",
+    "discovery_stopped_desc": "ዒላማውን URL ሲጎተት ስህተት ተከስቷል። በግራ በኩል ያለውን የተርሚናል ውፅዓት ይመልከቱ ወይም ከላይ ሌላ URL ይሞክሩ።"
+  }
+}

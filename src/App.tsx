@@ -7,8 +7,10 @@ import { DownloadPanel } from './components/DownloadPanel';
 import { CrawlPhase, LogMessage, TreeNode } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 import { Database, DownloadCloud, Pause, Play, XCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function App() {
+  const { t } = useTranslation();
   const [phase, setPhase] = useState<CrawlPhase>('idle');
   const [logs, setLogs] = useState<LogMessage[]>([]);
   const [tree, setTree] = useState<TreeNode | null>(null);
@@ -271,13 +273,13 @@ export default function App() {
               className="text-center max-w-3xl mb-12"
             >
               <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
-                Web Data Infrastructure & <br/>
+                {t('hero.title_1')} <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">
-                  Documentation Scraper
+                  {t('hero.title_2')}
                 </span>
               </h1>
               <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-                Deep recursive crawling, intelligent SPA sidebar discovery, and live-style offline website mirroring. Powered by local headless Chromium with stealth anti-bot protection.
+                {t('hero.subtitle')}
               </p>
               
               <div className="flex items-center justify-center gap-4 mb-16">
@@ -286,7 +288,7 @@ export default function App() {
                   className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-full font-medium transition-all shadow-md hover:shadow-lg flex items-center gap-2"
                 >
                   <Database size={18} />
-                  Start Crawling
+                  {t('hero.start_crawling')}
                 </button>
                 <a 
                   href="https://github.com/matakltm-code/site-url-scraper#site-url-scraper"
@@ -295,7 +297,7 @@ export default function App() {
                   className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-8 py-3 rounded-full font-medium transition-all shadow-sm flex items-center gap-2"
                 >
                   <DownloadCloud size={18} />
-                  View Docs
+                  {t('hero.view_docs')}
                 </a>
               </div>
             </motion.div>
@@ -327,7 +329,7 @@ export default function App() {
                 {/* Left Column: Log Stream */}
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-slate-800">Crawl Output</h3>
+                    <h3 className="text-lg font-semibold text-slate-800">{t('workspace.crawl_output')}</h3>
                     {phase !== 'crawling' && phase !== 'mirroring' && (
                       <button
                         onClick={() => {
@@ -337,7 +339,7 @@ export default function App() {
                         }}
                         className="text-xs font-medium text-slate-500 hover:text-slate-800 transition-colors"
                       >
-                        Clear & Reset
+                        {t('workspace.clear_reset')}
                       </button>
                     )}
                   </div>
@@ -351,8 +353,8 @@ export default function App() {
                       className="mt-4 p-5 bg-red-50 border border-red-200 rounded-xl flex items-center justify-between"
                     >
                       <div>
-                        <p className="font-semibold text-red-800">Crawl Encountered an Error</p>
-                        <p className="text-sm text-red-600">Review terminal output above for details.</p>
+                        <p className="font-semibold text-red-800">{t('workspace.error_title')}</p>
+                        <p className="text-sm text-red-600">{t('workspace.error_desc')}</p>
                       </div>
                       <button 
                         onClick={() => {
@@ -362,7 +364,7 @@ export default function App() {
                         }}
                         className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors shadow-sm"
                       >
-                        Reset Terminal
+                        {t('workspace.reset_terminal')}
                       </button>
                     </motion.div>
                   )}
@@ -374,15 +376,15 @@ export default function App() {
                       className="mt-4 p-5 bg-white border border-slate-200 rounded-xl shadow-sm flex items-center justify-between"
                     >
                       <div>
-                        <p className="font-semibold text-slate-800">Ready to Mirror</p>
-                        <p className="text-sm text-slate-500">{selectedIds.size} nodes selected for extraction.</p>
+                        <p className="font-semibold text-slate-800">{t('workspace.ready_to_mirror')}</p>
+                        <p className="text-sm text-slate-500">{t('workspace.nodes_selected', { count: selectedIds.size })}</p>
                       </div>
                       <button 
                         onClick={() => setIsConfirming(true)}
                         disabled={selectedIds.size === 0}
                         className="bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-sm"
                       >
-                        Extract & Bundle
+                        {t('workspace.extract_bundle')}
                       </button>
                     </motion.div>
                   )}
@@ -396,11 +398,11 @@ export default function App() {
                       <div className="flex items-center justify-between">
                          <div>
                            <p className="font-semibold text-slate-800">
-                             {mirrorStatus === 'paused' ? 'Mirroring Paused' : 'Mirroring in Progress'}
+                             {mirrorStatus === 'paused' ? t('workspace.mirroring_paused') : t('workspace.mirroring_in_progress')}
                            </p>
                            {progress && (
                              <p className="text-sm text-slate-500">
-                               Captured {progress.current} of {progress.total} links
+                               {t('workspace.captured', { current: progress.current, total: progress.total })}
                              </p>
                            )}
                          </div>
@@ -436,19 +438,19 @@ export default function App() {
 
                 {/* Right Column: Tree View / Download */}
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-lg font-semibold text-slate-800">Resource Tree</h3>
+                  <h3 className="text-lg font-semibold text-slate-800">{t('workspace.resource_tree')}</h3>
                   
                   {phase === 'crawling' && !tree && (
                     <div className="h-[400px] bg-white border border-slate-200 border-dashed rounded-xl flex flex-col items-center justify-center text-slate-400">
                       <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4" />
-                      <p>Discovering routes...</p>
+                      <p>{t('workspace.discovering')}</p>
                     </div>
                   )}
 
                   {phase === 'error' && (
                     <div className="h-[300px] bg-slate-50 border border-red-200 border-dashed rounded-xl flex flex-col items-center justify-center text-slate-500 text-center p-6">
-                      <p className="font-medium text-slate-700 mb-1">Resource Discovery Stopped</p>
-                      <p className="text-xs text-slate-500 max-w-xs">An error occurred while crawling the target URL. Check the terminal output on the left or try another URL above.</p>
+                      <p className="font-medium text-slate-700 mb-1">{t('workspace.discovery_stopped')}</p>
+                      <p className="text-xs text-slate-500 max-w-xs">{t('workspace.discovery_stopped_desc')}</p>
                     </div>
                   )}
 

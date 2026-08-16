@@ -1,0 +1,29 @@
+{
+  "header": {
+    "title": "Site Url Scraper"
+  },
+  "hero": {
+    "title_1": "Web Data Infrastructure &",
+    "title_2": "Documentation Scraper",
+    "subtitle": "Deep recursive crawling, intelligent SPA sidebar discovery, and live-style offline website mirroring. Powered by local headless Chromium with stealth anti-bot protection.",
+    "start_crawling": "Start Crawling",
+    "view_docs": "View Docs"
+  },
+  "workspace": {
+    "crawl_output": "Crawl Output",
+    "clear_reset": "Clear & Reset",
+    "error_title": "Crawl Encountered an Error",
+    "error_desc": "Review terminal output above for details.",
+    "reset_terminal": "Reset Terminal",
+    "ready_to_mirror": "Ready to Mirror",
+    "nodes_selected": "{{count}} nodes selected for extraction.",
+    "extract_bundle": "Extract & Bundle",
+    "mirroring_paused": "Mirroring Paused",
+    "mirroring_in_progress": "Mirroring in Progress",
+    "captured": "Captured {{current}} of {{total}} links",
+    "resource_tree": "Resource Tree",
+    "discovering": "Discovering routes...",
+    "discovery_stopped": "Resource Discovery Stopped",
+    "discovery_stopped_desc": "An error occurred while crawling the target URL. Check the terminal output on the left or try another URL above."
+  }
+}
