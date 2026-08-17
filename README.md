@@ -11,15 +11,15 @@
 
 ## ✨ Features
 
-- 🕷 **100% Local Headless URL Discovery**: Crawl sites recursively using local Puppeteer with stealth anti-bot protection and Cheerio.
-- 🥷 **Built-In Stealth & Anti-Bot**: Automatic User-Agent spoofing, Sec-CH-UA headers, viewport matching, and `puppeteer-extra-plugin-stealth` integration.
-- 📜 **Infinite Scrolling & Navigation Expansion**: Automatic `window.scrollTo` loops and sidebar accordion/drawer expansion to capture dynamic SPAs and lazy-loaded routes.
-- 🌳 **Interactive Tree Visualizer**: Filter discovered pages, folders, and domains with bulk node selection and metric counts.
-- 📺 **Buffered Real-Time SSE Terminal**: Monitor live crawl and extraction events streamed via Server-Sent Events with log replay buffering and timestamped log copying.
-- 📦 **Markdown & ZIP Packaging**: Extract web pages, convert HTML to clean Markdown using Turndown, and automatically trigger compressed `.zip` archive downloads in the browser.
-- 🏷 **Dynamic Domain-Timestamp Naming**: Download files formatted like `<domain-slug>_<YYYY-MM-DD_HHmmss>.zip` with forced `Content-Disposition` attachment headers.
-- ⏸ **Interactive Mirror Controls**: Pause, Resume, or Cancel active extraction pipelines safely with live progress bar tracking.
-- 🛡 **Real-Time Security**: Built-in SSRF protection blocking local/private endpoint calls and rate limiting.
+- 🕷 **Deep URL Discovery & Crawling**: Crawls sites recursively using local headless Puppeteer and Cheerio.
+- 🥷 **Stealth & Anti-Bot Protection**: Automatic User-Agent spoofing, viewport matching, and `puppeteer-extra-plugin-stealth` to bypass basic bot detections.
+- 📜 **Dynamic SPA Support**: Handles infinite scrolling, lazy-loaded routes, and sidebar accordion expansions to capture hidden content.
+- 🌳 **Interactive Resource Tree**: Visualizes discovered pages and folders. Select or deselect specific nodes to customize your extraction.
+- 📦 **Offline Mirroring & Markdown Export**: Converts HTML to clean Markdown (via Turndown) and automatically bundles everything into a downloadable `.zip` archive.
+- 📺 **Real-Time Live Terminal**: Streams live crawl events and logs directly to the UI via Server-Sent Events (SSE).
+- ⏸ **Job Controls (Pause/Resume/Cancel)**: Full interactive control over the active extraction pipeline with real-time progress bars.
+- 🌍 **Multi-Language Support (i18n)**: Seamlessly switch between English (🇺🇸) and Amharic (🇪🇹) with a built-in language selector.
+- 🛡 **Enterprise-Grade Security**: Built-in SSRF protection blocks local/private IP bypassing and enforces rate limiting.
 
 ---
 
