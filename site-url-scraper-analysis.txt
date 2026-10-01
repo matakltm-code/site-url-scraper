@@ -1,0 +1,74 @@
+1. PROJECT OVERVIEW
+- Project Name: site-url-scraper
+- Project Repo URL: https://github.com/matakltm-code/site-url-scraper
+- Demo Site URL: Not Available / To Be Added
+
+2. MOTIVATION & OBJECTIVE
+- Primary Problem: Traditional web scraping tools and offline site archivers often rely on expensive cloud SaaS scraping APIs, fail on modern Single Page Applications (SPAs) with dynamic JavaScript rendering, or lack intuitive UI controls for granular link selection and real-time process monitoring.
+- Objective: Provide a fast, modern, 100% self-hosted, full-stack local site crawler, recursive link discoverer, and offline web content packager. The system enables developers, researchers, and technical writers to discover site structures, inspect route hierarchies interactively, convert dynamic web documentation into clean Markdown and HTML, localize static assets (images, CSS, JS), and package offline mirrors into ZIP archives without relying on third-party cloud services.
+
+3. TECH STACK & ARCHITECTURE
+- Frontend:
+  - Framework: React 19, TypeScript, Vite
+  - Styling & UI Components: Tailwind CSS 4, Lucide React Icons, Motion (Framer Motion)
+  - Internationalization: i18next, react-i18next (supports English 🇺🇸 and Amharic 🇪🇹)
+  - State & UI Logic: React custom hooks, SSE (Server-Sent Events) EventSource consumer, interactive hierarchical tree selector
+- Backend:
+  - Runtime & Server Framework: Node.js (v20+), Express (v4), tsx (development runner), esbuild (production builder)
+  - Web Scraping & Headless Automation: Puppeteer Extra, puppeteer-extra-plugin-stealth
+  - DOM Parsing & HTML Manipulation: Cheerio (v1.2)
+  - Content Transformation & Archiving: Turndown (HTML-to-Markdown converter), Archiver (ZIP stream compression)
+  - Security & Rate Limiting: express-rate-limit, custom DNS/IP range SSRF validator, Node.js native crypto & dns modules
+- Architecture Pattern:
+  - Full-Stack Monorepo SPA + API Server with Vite middleware in development and static bundle serving in production.
+  - Asynchronous event-driven logging over per-job Server-Sent Events (SSE) channels.
+  - In-memory job state isolation (`activeJobs`, `jobSseClients`, `jobLogBuffers`).
+  - Master Chromium browser connection pool with isolated per-request browser contexts.
+
+4. ACCOMPLISHED FEATURES
+- Deep URL Discovery & Crawling:
+  - Accepts seed URLs, performs domain-scoped recursive crawling using local headless Puppeteer, and builds a hierarchical tree structure of disovered paths and leaf pages.
+- Stealth & Anti-Bot Protection:
+  - Integrates `puppeteer-extra-plugin-stealth` with customized User-Agent spoofing (`Chrome/128`), viewport configuration (1920x1080), Sec-CH-UA headers, and `navigator.webdriver` removal to bypass basic bot detection mechanisms.
+- Dynamic SPA Support & DOM Auto-Expansion:
+  - Executes automated window scrolling loops (`window.scrollTo`) to trigger lazy-loaded images/routes.
+  - Automatically clicks collapsed navigation items, sidebar category toggles, accordion menus, and HTML `<details>` elements to reveal hidden sub-routes.
+- Interactive Resource Tree Selector:
+  - Visualizes disovered pages and folders in a multi-level collapsible UI.
+  - Supports bulk toggle selection and targeted node selection/deselection to customize offline extraction targets.
+- Real-Time Live Terminal Feed (SSE Logging):
+  - Streams real-time backend crawl logs and status events to an integrated terminal logger in the UI via Server-Sent Events (`/api/logs?jobId=...`).
+  - Features in-memory log buffer replay (`jobLogBuffers`) ensuring zero log loss when clients connect after job initiation.
+- Interactive Job Control (Pause / Resume / Cancel):
+  - Offers interactive controls during offline mirroring tasks with live progress percentage bars.
+  - Allows users to pause execution, resume from paused states, or immediately cancel active jobs.
+- Offline Content Mirroring & Markdown Packaging:
+  - Fetches selected web pages, rewrites relative internal links, downloads and localizes static assets (stylesheets, scripts, images) with hashed filenames into an `assets/` directory.
+  - Converts raw HTML into clean Markdown format using Turndown.
+  - Compresses HTML pages, Markdown files, and downloaded assets into a downloadable `.zip` archive.
+  - Auto-triggers immediate browser download upon job completion.
+- Automated Background ZIP Archiving Cleanup:
+  - Scheduled background task that monitors the `/dist/downloads` directory and automatically purges `.zip` archives older than 30 minutes.
+- Enterprise Security & Rate Limiting:
+  - Built-in SSRF (Server-Side Request Forgery) protection that checks target hostnames against private IPv4/IPv6 ranges and explicitly blocks GCP/cloud metadata service endpoints (`169.254.169.254`, `metadata.google.internal`).
+  - Endpoint rate limiting via `express-rate-limit` to prevent task flooding on `/api/crawl` and `/api/mirror`.
+  - Enforces maximum concurrent active job limits (max 3 concurrent jobs).
+- Multi-Language Support (i18n):
+  - Built-in language picker supporting English (`en`) and Amharic (`am`).
+
+5. COMPLEX CHALLENGES & ARCHITECTURAL HIGHLIGHTS
+- Shared Local Chromium Browser Context Pool:
+  - Challenge: Launching full headless Chromium browser instances per crawl request causes severe CPU/memory overhead and startup latency.
+  - Solution: Implemented a shared master browser instance (`getLocalBrowser()`) with automated reconnection checks. For each crawl or mirror job, an isolated context (`masterBrowser.createBrowserContext()`) is instantiated and disposed of post-task (`context.close()`), drastically improving throughput and resource efficiency.
+- Robust SSRF Validation with Asynchronous DNS Resolution:
+  - Challenge: Simple hostname string checks fail against DNS rebinding, IP decimal encoding, or domain aliases pointing to internal cloud metadata endpoints.
+  - Solution: Created `isSsrfSafeUrl()`, which validates protocol (`http:`/`https:`), explicitly blocks cloud metadata paths (`169.254.169.254`, `metadata.google.internal`, `.internal`), and asynchronously resolves domain names to IP addresses (`dns.lookup`). Resolved IPs are checked against private IPv4 (10.x, 127.x, 172.16-31.x, 192.168.x, 169.254.x, 100.64-127.x) and IPv6 (`::1`, `fe80:`, `fc00:`, `fd00:`) address spaces before network requests are permitted.
+- Isolated Multi-Tenant SSE Log Streaming & Replay Buffer:
+  - Challenge: Standard single-channel SSE feeds leak logs across concurrent users and miss early log events emitted before the client SSE connection completes.
+  - Solution: Implemented per-job SSE channels (`/api/logs?jobId=...`). Each job maintains its own `Set<express.Response>` in `jobSseClients` and a circular log array buffer (`jobLogBuffers`). Upon connection, the server replays all pre-buffered events to the client before streaming live events.
+- Resilient Dynamic DOM Expansion & Hydration Handling:
+  - Challenge: Modern documentation sites (e.g., Docusaurus, Next.js) render sidebar links lazily or conceal sub-routes inside collapsed JavaScript accordions, while network idle timeouts can cause total job failure.
+  - Solution: Combined time-bounded auto-scrolling (`window.scrollBy`) with targeted selector clicks on navigation toggles and summary elements. Wrapped Puppeteer `page.goto` calls in fallback handlers that log timeouts as non-fatal warnings and extract the current DOM snapshot rather than aborting the job.
+- Offline Asset Localization & Concurrent Archiver Pipeline:
+  - Challenge: Mirroring a website for offline viewing requires resolving relative/absolute asset paths (CSS, JS, images), downloading assets without duplicating requests or exceeding memory limits, and rewriting HTML links.
+  - Solution: Built a Cheerio-based pipeline that inspects DOM nodes (`<link>`, `<script>`, `<img>`, `<a>`), converts URLs to local asset paths (`assets/<md5-hash>.<ext>`), tracks unique asset downloads via `Set<string>`, enforces asset byte limits (15MB limit per asset) with `AbortController` timeouts, and pipes converted HTML and Markdown directly into an `archiver` ZIP write stream.
